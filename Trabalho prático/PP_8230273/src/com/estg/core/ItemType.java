@@ -1,4 +1,4 @@
-package com.estg.core.enums;
+package com.estg.core;
 
 /**
  *
@@ -11,8 +11,8 @@ public enum ItemType {
     NON_PERISHABLE_FOOD,
     PERISHABLE_FOOD;
 
-    public String ItemType_To_String(ItemType it) {
-        switch (it) {
+    public String ItemType_To_String(ItemType item) {
+        switch (item) {
             case CLOTHING:
                 return "Clothing";
             case MEDICINE:
