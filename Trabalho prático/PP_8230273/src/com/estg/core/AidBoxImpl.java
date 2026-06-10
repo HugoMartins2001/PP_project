@@ -142,6 +142,7 @@ public class AidBoxImpl implements AidBox {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
+
         sb.append("Código : ").append(code).append("\n");
         sb.append("Zona : ").append(zone).append("\n");
         sb.append("Referencia do Local : ").append(RefLocal).append("\n");

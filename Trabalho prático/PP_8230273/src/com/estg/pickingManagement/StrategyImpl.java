@@ -9,7 +9,8 @@ import com.estg.core.Institution;
 public class StrategyImpl implements Strategy {
 
     @Override
-    public Route[] generate(Institution instn, RouteValidator rv) {
+    public Route[] generate(Institution institution, RouteValidator routeValidator) {
+        
     }
 
 }
