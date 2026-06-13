@@ -1,7 +1,9 @@
 package com.estg.pickingManagement;
 
 import com.estg.core.AidBox;
+import com.estg.core.AidBoxImpl;
 import com.estg.core.Container;
+import com.estg.core.exceptions.AidBoxException;
 import com.estg.pickingManagement.exceptions.RouteException;
 
 /**
@@ -67,7 +69,7 @@ public class RouteImpl implements Route {
 
         route = newRoute;
     }
-    
+
     private boolean AidboxIsCompatible(AidBox aidbox) {
         Container[] containers = aidbox.getContainers();
         for (int i = 0; i < containers.length; i++) {
@@ -143,23 +145,89 @@ public class RouteImpl implements Route {
     }
 
     @Override
-    public void insertAfter(AidBox aidbox, AidBox aidbox1) throws RouteException {
+    public void insertAfter(AidBox after, AidBox toInsert) throws RouteException {
+        if (after == null || toInsert == null) {
+            throw new RouteException("Any Aid Box is null");
+        }
+
+        int indexAfter = this.getAidBoxIndex(after);
+        if (indexAfter == -1) {
+            throw new RouteException("The Aid Box to replace is not in the route");
+        }
+
+        if (containsAidBox(toInsert)) {
+            throw new RouteException("The Aid Box to insert is already in the route");
+        }
+
+        if (!AidboxIsCompatible(toInsert)) {
+            throw new RouteException("The Aid Box to insert is not compatible with the Vehicle of the route");
+        }
+
+        // Expand the array if it has reached its limit
+        if (this.route.length == this.aidboxCounter) {
+            ExpandRoute();
+        }
+
+        // Shift elements to the right to make room AFTER the found AidBox
+        for (int i = this.aidboxCounter; i > indexAfter + 1; i--) {
+            this.route[i] = this.route[i - 1];
+        }
+
+        // Insert the new AidBox
+        this.route[indexAfter + 1] = toInsert;
+        this.aidboxCounter++;
     }
 
     @Override
     public AidBox[] getRoute() {
+        // Creates a new array to prevent external modification of the internal route array.
+        // It's sized exactly to aidboxCounter to avoid returning empty trailing nulls.
+        AidBox[] routeCopy = new AidBox[this.aidboxCounter];
+        int counter = 0;
+        for (int i = 0; i < this.aidboxCounter; i++) {
+            try {
+                Object clone = ((AidBoxImpl) this.route[i]).clone();
+                routeCopy[counter++] = (AidBox) clone;
+            } catch (CloneNotSupportedException exception) {
+                System.out.println("Error while cloning route!");
+            }
+        }
+        return routeCopy;
     }
 
     @Override
     public Vehicle getVehicle() {
+        return this.vehicle;
     }
 
     @Override
     public double getTotalDistance() {
+        double totalDistance = 0;
+
+        for (int i = 0; i < this.aidboxCounter - 1; i++) {
+            try {
+                totalDistance += this.route[i].getDistance(this.route[i + 1]);
+            } catch (AidBoxException exception) {
+                totalDistance += 0;
+            }
+        }
+
+        return totalDistance;
     }
 
     @Override
     public double getTotalDuration() {
+        double totalDuration = 0;
+
+        for (int i = 0; i < this.aidboxCounter - 1; i++) {
+            try {
+                totalDuration += this.route[i].getDuration(this.route[i + 1]);
+            } catch (AidBoxException exception) {
+                totalDuration += 0;
+            }
+        }
+
+        return totalDuration;
     }
 
 }

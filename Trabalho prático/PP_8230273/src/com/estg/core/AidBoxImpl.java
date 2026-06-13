@@ -138,6 +138,11 @@ public class AidBoxImpl implements AidBox {
         AidBoxImpl other = (AidBoxImpl) obj;
         return this.code.equals(other.getCode());
     }
+    
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
 
     @Override
     public String toString() {

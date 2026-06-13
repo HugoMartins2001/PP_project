@@ -14,7 +14,7 @@ public class VehicleImpl implements Vehicle {
 
     public VehicleImpl(String code, ItemType supplyType) {
         this.supplyType = supplyType;
-        this.status = true; // Assume vehicle is initially enabled
+        this.status = true;
     }
 
     public VehicleImpl(String code, ItemType supplyType, boolean status) {
