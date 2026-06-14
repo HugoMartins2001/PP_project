@@ -1,0 +1,35 @@
+Error occurred at: 2026-06-14T16:16:27.093771900
+com.estg.core.exceptions.PickingMapException: There are no picking maps in the institution
+	at com.estg.core.InstitutionImpl.getCurrentPickingMap(InstitutionImpl.java:294)
+	at Main.Main.main(Main.java:51)
+----------------------------------------
+Error occurred at: 2026-06-14T16:18:33.877713800
+com.estg.core.exceptions.PickingMapException: There are no picking maps in the institution
+	at com.estg.core.InstitutionImpl.getCurrentPickingMap(InstitutionImpl.java:294)
+	at Main.Main.main(Main.java:51)
+----------------------------------------
+Error occurred at: 2026-06-14T16:21:12.103980
+com.estg.core.exceptions.PickingMapException: There are no picking maps in the institution
+	at com.estg.core.InstitutionImpl.getCurrentPickingMap(InstitutionImpl.java:294)
+	at Main.Main.main(Main.java:51)
+----------------------------------------
+Error occurred at: 2026-06-14T16:27:13.290935500
+com.estg.core.exceptions.PickingMapException: There are no picking maps in the institution
+	at com.estg.core.InstitutionImpl.getCurrentPickingMap(InstitutionImpl.java:294)
+	at Main.Main.main(Main.java:51)
+----------------------------------------
+Error occurred at: 2026-06-14T16:30:29.962712300
+com.estg.core.exceptions.PickingMapException: There are no picking maps in the institution
+	at com.estg.core.InstitutionImpl.getCurrentPickingMap(InstitutionImpl.java:294)
+	at Main.Main.main(Main.java:52)
+----------------------------------------
+Error occurred at: 2026-06-14T16:39:54.797899400
+com.estg.core.exceptions.PickingMapException: There are no picking maps in the institution
+	at com.estg.core.InstitutionImpl.getCurrentPickingMap(InstitutionImpl.java:294)
+	at Main.Main.main(Main.java:49)
+----------------------------------------
+Error occurred at: 2026-06-14T16:40:08.776767300
+com.estg.core.exceptions.VehicleException: The Vehicle is null
+	at com.estg.core.InstitutionImpl.addVehicle(InstitutionImpl.java:197)
+	at Main.Main.main(Main.java:39)
+----------------------------------------

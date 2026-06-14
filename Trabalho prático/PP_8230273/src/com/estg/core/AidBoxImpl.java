@@ -8,7 +8,7 @@ import java.util.Arrays;
  *
  * @author hugol
  */
-public class AidBoxImpl implements AidBox {
+public class AidBoxImpl implements AidBox, Cloneable {
 
     private static final int EXPAND = 2;
 
@@ -17,14 +17,24 @@ public class AidBoxImpl implements AidBox {
     private String RefLocal;
     private Container[] containers;
     private int containerCounter;
+    private GeographicCoordinates coordinates;
 
     public AidBoxImpl(String code, String zone, String RefLocal) {
         this.code = code;
         this.zone = zone;
         this.RefLocal = RefLocal;
-        this.containers = new Container[this.containers.length];
+        this.containers = new Container[10];
         this.containerCounter = 0;
+        this.coordinates = new GeographicCoordinatesImpl(0, 0);
+    }
 
+    public AidBoxImpl(String code, String zone, String RefLocal, GeographicCoordinates coordinates) {
+        this.code = code;
+        this.zone = zone;
+        this.RefLocal = RefLocal;
+        this.containers = new Container[10];
+        this.containerCounter = 0;
+        this.coordinates = coordinates;
     }
 
     @Override
@@ -42,12 +52,31 @@ public class AidBoxImpl implements AidBox {
         return this.RefLocal;
     }
 
+    private double calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+        double R = 6371;
+        double dLat = Math.toRadians(lat2 - lat1);
+        double dLon = Math.toRadians(lon2 - lon1);
+        double a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+                   Math.cos(Math.toRadians(lat1)) * Math.cos(Math.toRadians(lat2)) *
+                   Math.sin(dLon / 2) * Math.sin(dLon / 2);
+        double c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+        return R * c;
+    }
+
     @Override
     public double getDistance(AidBox aidbox) throws AidBoxException {
         if (aidbox == null) {
             throw new AidBoxException("Aid Box does not exist!");
         }
-
+        if (this.coordinates == null || aidbox.getCoordinates() == null) {
+            return 0.0;
+        }
+        return calculateDistance(
+            this.coordinates.getLatitude(),
+            this.coordinates.getLongitude(),
+            aidbox.getCoordinates().getLatitude(),
+            aidbox.getCoordinates().getLongitude()
+        );
     }
 
     @Override
@@ -55,11 +84,12 @@ public class AidBoxImpl implements AidBox {
         if (aidbox == null) {
             throw new AidBoxException("Aid Box does not exist!");
         }
-
+        return getDistance(aidbox) * 1.5;
     }
 
     @Override
     public GeographicCoordinates getCoordinates() {
+        return this.coordinates;
     }
 
     private void expand() {
@@ -141,14 +171,19 @@ public class AidBoxImpl implements AidBox {
     
     @Override
     public Object clone() throws CloneNotSupportedException {
-        return super.clone();
+        AidBoxImpl cloned = (AidBoxImpl) super.clone();
+        cloned.containers = new Container[this.containers.length];
+        for (int i = 0; i < this.containerCounter; i++) {
+            cloned.containers[i] = this.containers[i];
+        }
+        return cloned;
     }
 
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
 
-        sb.append("Código : ").append(code).append("\n");
+        sb.append("Codigo : ").append(code).append("\n");
         sb.append("Zona : ").append(zone).append("\n");
         sb.append("Referencia do Local : ").append(RefLocal).append("\n");
         return sb.toString();

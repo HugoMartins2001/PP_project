@@ -2,12 +2,13 @@ package com.estg.core;
 
 import com.estg.core.exceptions.MeasurementException;
 import java.time.LocalDate;
+import java.util.Arrays;
 
 /**
  *
  * @author hugol
  */
-public abstract class ContainerImpl implements Container {
+public class ContainerImpl implements Container {
 
     private static final int INITIAL_SIZE = 10;
     private static final int EXPAND = 2;
@@ -43,12 +44,28 @@ public abstract class ContainerImpl implements Container {
 
     @Override
     public Measurement[] getMeasurements() {
-
+        return Arrays.copyOf(this.measurements, this.measurementcounter);
     }
 
     @Override
     public Measurement[] getMeasurements(LocalDate date) {
-
+        if (date == null) {
+            return new Measurement[0];
+        }
+        int count = 0;
+        for (int i = 0; i < this.measurementcounter; i++) {
+            if (this.measurements[i].getDate().toLocalDate().equals(date)) {
+                count++;
+            }
+        }
+        Measurement[] result = new Measurement[count];
+        int idx = 0;
+        for (int i = 0; i < this.measurementcounter; i++) {
+            if (this.measurements[i].getDate().toLocalDate().equals(date)) {
+                result[idx++] = this.measurements[i];
+            }
+        }
+        return result;
     }
 
     @Override
@@ -64,7 +81,7 @@ public abstract class ContainerImpl implements Container {
         if (this.measurementcounter != 0) {
             Measurement lastMeasurementDate = this.measurements[this.measurementcounter - 1];
 
-            if (measurement.getDate().isBefore(measurement.getDate())) {
+            if (measurement.getDate().isBefore(lastMeasurementDate.getDate())) {
                 throw new MeasurementException("The date cannot be older than the last date");
             }
 
@@ -113,7 +130,7 @@ public abstract class ContainerImpl implements Container {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Código : ").append(code).append("\n");
+        sb.append("Codigo : ").append(code).append("\n");
         sb.append("Capacidade : ").append(capacity).append("\n");
         sb.append("Item type : ").append(type.ItemType_To_String(type)).append("\n");
         return sb.toString();

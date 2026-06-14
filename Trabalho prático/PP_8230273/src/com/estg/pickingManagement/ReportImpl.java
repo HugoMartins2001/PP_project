@@ -2,7 +2,7 @@ package com.estg.pickingManagement;
 
 import java.time.LocalDateTime;
 
-public class ReportImpl implements Report {
+public class ReportImpl implements Report, Cloneable {
 
     private int usedVehicles;
     private int pickedContainers;
@@ -11,6 +11,16 @@ public class ReportImpl implements Report {
     private int nonPickedContainers;
     private int notUsedVehicles;
     private LocalDateTime date;
+
+    public ReportImpl() {
+        this.usedVehicles = 0;
+        this.pickedContainers = 0;
+        this.totalDistance = 0.0;
+        this.totalDuration = 0.0;
+        this.nonPickedContainers = 0;
+        this.notUsedVehicles = 0;
+        this.date = LocalDateTime.now();
+    }
 
     public ReportImpl(int usedVehicles, int pickedContainers, double totalDistance, double totalDuration, int nonPickedContainers, int notUsedVehicles, LocalDateTime date) {
         this.usedVehicles = usedVehicles;
@@ -27,9 +37,17 @@ public class ReportImpl implements Report {
         return this.usedVehicles;
     }
 
+    public void setUsedVehicles(int usedVehicles) {
+        this.usedVehicles = usedVehicles;
+    }
+
     @Override
     public int getPickedContainers() {
         return this.pickedContainers;
+    }
+
+    public void setPickedContainers(int pickedContainers) {
+        this.pickedContainers = pickedContainers;
     }
 
     @Override
@@ -37,9 +55,17 @@ public class ReportImpl implements Report {
         return this.totalDistance;
     }
 
+    public void setTotalDistance(double totalDistance) {
+        this.totalDistance = totalDistance;
+    }
+
     @Override
     public double getTotalDuration() {
         return this.totalDuration;
+    }
+
+    public void setTotalDuration(double totalDuration) {
+        this.totalDuration = totalDuration;
     }
 
     @Override
@@ -47,14 +73,26 @@ public class ReportImpl implements Report {
         return this.nonPickedContainers;
     }
 
+    public void setNonPickedContainers(int nonPickedContainers) {
+        this.nonPickedContainers = nonPickedContainers;
+    }
+
     @Override
     public int getNotUsedVehicles() {
         return this.notUsedVehicles;
     }
 
+    public void setNotUsedVehicles(int notUsedVehicles) {
+        this.notUsedVehicles = notUsedVehicles;
+    }
+
     @Override
     public LocalDateTime getDate() {
         return this.date;
+    }
+
+    public void setDate(LocalDateTime date) {
+        this.date = date;
     }
 
     @Override
@@ -65,13 +103,14 @@ public class ReportImpl implements Report {
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
-        sb.append("Data : ").append(date).append("\n");
-        sb.append("Data : ").append(pickedContainers).append("\n");
-        sb.append("Data : ").append(nonPickedContainers).append("\n");
-        sb.append("Data : ").append(totalDistance).append("\n");
-        sb.append("Data : ").append(totalDuration).append("\n");
-        sb.append("Data : ").append(usedVehicles).append("\n");
-        sb.append("Data : ").append(notUsedVehicles).append("\n");
+        java.time.format.DateTimeFormatter formatter = java.time.format.DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        sb.append("Date : ").append(date.format(formatter)).append("\n");
+        sb.append("Picked Containers : ").append(pickedContainers).append("\n");
+        sb.append("Non Picked Containers : ").append(nonPickedContainers).append("\n");
+        sb.append("Total Distance : ").append(totalDistance).append("\n");
+        sb.append("Total Duration : ").append(totalDuration).append("\n");
+        sb.append("Used Vehicles : ").append(usedVehicles).append("\n");
+        sb.append("Not Used Vehicles : ").append(notUsedVehicles).append("\n");
         return sb.toString();
     }
 }
