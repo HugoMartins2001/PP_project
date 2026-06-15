@@ -370,8 +370,8 @@ public class InstitutionImpl implements Institution {
         sb.append("Institution Name: ").append(this.name).append("\n");
         if (this.coordinates != null) {
             sb.append("Coordinates: (")
-              .append(this.coordinates.getLatitude()).append(", ")
-              .append(this.coordinates.getLongitude()).append(")\n");
+                    .append(this.coordinates.getLatitude()).append(", ")
+                    .append(this.coordinates.getLongitude()).append(")\n");
         }
         sb.append("Number of Aid Boxes: ").append(this.aidboxCounter).append("\n");
         sb.append("Number of Vehicles: ").append(this.vehicleCounter).append("\n");
